@@ -27,7 +27,7 @@ def test_auth_resource_path_exist(init_interpreter, doc_type):
     """
     interpreter = init_interpreter
     parser = interpreter[doc_type].parser
-    es = Elasticsearch([{"host": config.ES["es.nodes"], "port": config.ES["es.port"]}])
+    es = Elasticsearch([{"host": config.ES["es.nodes"], "port": config.ES["es.port"], "timeout": 60, "max_retries": 7, "retry_on_timeout": True}])
     s = Search(using=es, index=parser.name, doc_type=doc_type)
     response = s.execute()
 
@@ -46,7 +46,7 @@ def test_es_types(init_interpreter, doc_type):
     """
     interpreter = init_interpreter
     parser = interpreter[doc_type].parser
-    es = Elasticsearch([{"host": config.ES["es.nodes"], "port": config.ES["es.port"]}])
+    es = Elasticsearch([{"host": config.ES["es.nodes"], "port": config.ES["es.port"], "timeout": 60, "max_retries": 7, "retry_on_timeout": True}])
 
     indices = client.IndicesClient(es)
     index_name = list(indices.get_alias(name=parser.name).keys())[0]

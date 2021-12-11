@@ -77,7 +77,7 @@ def main():
 
     es_hosts = config.ES["es.nodes"]
     es_port = config.ES["es.port"]
-    es = Elasticsearch([{"host": es_hosts, "port": es_port}])
+    es = Elasticsearch([{"host": es_hosts, "port": es_port, "timeout": 60, "max_retries": 7, "retry_on_timeout": True}])
     index_names = interpreter.get_index_names(config)
 
     if args.force or check_to_run_etl(es, index_names):

@@ -7,7 +7,7 @@ import tube.settings as config
 
 
 def get_item_from_elasticsearch(index, doc_type, item):
-    es = Elasticsearch([{"host": config.ES["es.nodes"], "port": config.ES["es.port"]}])
+    es = Elasticsearch([{"host": config.ES["es.nodes"], "port": config.ES["es.port"], "timeout": 60, "max_retries": 7, "retry_on_timeout": True}])
     s = Search(using=es, index=index, doc_type=doc_type).query(
         "match", submitter_id=item
     )
