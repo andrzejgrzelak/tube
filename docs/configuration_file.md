@@ -225,3 +225,42 @@ injecting_props:
       src: id
     - name: project_id
 ```
+
+#### nested_props
+We can create nested structure for the data of nodes which have many-to-one relationships with its ancestor nodes in the dictionary. Before, it was limited to flatten data with fields that directly belong to the parent node in the index. The example of mappings is given below:
+
+```nested mapping
+name: pcdc_1
+  doc_type: subject
+  type: aggregator
+  root: subject
+  props:
+    - name: subject_submitter_id
+      src: submitter_id
+    - name: honest_broker_subject_id
+    - name: project_id
+    - name: age_at_enrollment
+    - name: year_at_enrollment
+    - name: consortium
+    - name: data_contributor_id
+    - name: enrolled_status
+    - name: treatment_arm
+    - name: censor_status
+    - name: age_at_censor_status
+
+  parent_props:
+    - path: persons[person_submitter_id:submitter_id,race:race,sex:sex,ethnicity:ethnicity]
+  
+  nested_props:
+    - name: event_and_tumor_under_subject
+      path: clinical_events
+      props:
+        - name: disease_phase
+        - name: age_at_disease_phase
+      nested_props:
+        - name: tumor_assessments_under_events
+          path: tumor_assessments
+          props:
+            - name: tumor_classification
+            - name: tumor_site
+```
